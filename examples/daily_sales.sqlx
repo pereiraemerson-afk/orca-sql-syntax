@@ -1,0 +1,30 @@
+config {
+  type: "incremental",
+  schema: "gold",
+  description: "Daily sales per store, rebuilt incrementally.",
+  uniqueKey: ["store_id", "sales_date"],
+  bigquery: {
+    partitionBy: "sales_date",
+    clusterBy: ["store_id"]
+  },
+  assertions: {
+    nonNull: ["store_id", "sales_date", "revenue"]
+  }
+}
+
+-- Revenue and ticket size per store and day (BigQuery)
+SELECT
+  s.store_id,
+  DATE(s.sold_at) AS sales_date,
+  SUM(s.quantity * s.unit_price) AS revenue,
+  SAFE_DIVIDE(SUM(s.quantity * s.unit_price), COUNT(DISTINCT s.ticket_id)) AS avg_ticket,
+  CAST(COUNT(*) AS INT64) AS items
+FROM ${ref("sales")} AS s
+JOIN ${ref("stores")} AS st USING (store_id)
+WHERE st.active = TRUE
+${when(incremental(), `AND DATE(s.sold_at) > (SELECT MAX(sales_date) FROM ${self()})`)}
+GROUP BY 1, 2
+
+post_operations {
+  ALTER TABLE ${self()} ADD PRIMARY KEY (store_id, sales_date) NOT ENFORCED;
+}

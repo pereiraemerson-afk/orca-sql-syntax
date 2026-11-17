@@ -1,0 +1,82 @@
+{
+  "manifestVersion": 2,
+  "id": "sql-syntax",
+  "name": "SQL & Dataform SQLX Syntax",
+  "version": "1.0.0",
+  "description": "Syntax highlighting for SQL (ANSI, PostgreSQL, T-SQL, PL/SQL, MySQL, BigQuery) and Dataform .sqlx files.",
+  "author": {
+    "name": "Emerson Pereira",
+    "url": "https://github.com/pereiraemerson-afk"
+  },
+  "repository": "https://github.com/pereiraemerson-afk/orca-sql-syntax",
+  "homepage": "https://github.com/pereiraemerson-afk/orca-sql-syntax",
+  "license": "MIT",
+  "icon": "media/icon.png",
+  "engines": {
+    "orca": ">=1.4.246"
+  },
+  "execution": "data",
+  "contributes": {
+    "syntaxes": [
+      {
+        "id": "sql",
+        "title": "SQL",
+        "scopeName": "source.sql",
+        "path": "syntaxes/sql.tmLanguage.json",
+        "configuration": "syntaxes/language-configuration.json",
+        "extensions": [
+          ".sql",
+          ".ddl",
+          ".dml",
+          ".pgsql",
+          ".psql",
+          ".mysql",
+          ".tsql",
+          ".plsql",
+          ".pls",
+          ".pks",
+          ".pkb",
+          ".prc",
+          ".fnc",
+          ".trg",
+          ".hql",
+          ".bql"
+        ]
+      },
+      {
+        "id": "sqlx",
+        "title": "SQLX (Dataform)",
+        "scopeName": "source.sqlx",
+        "path": "syntaxes/sqlx.tmLanguage.json",
+        "configuration": "syntaxes/language-configuration.json",
+        "extensions": [
+          ".sqlx"
+        ]
+      }
+    ]
+  },
+  "cover": {
+    "path": "media/screenshot-sql.png",
+    "alt": "SQL file highlighted in the Orca editor next to the plugin name and feature list."
+  },
+  "screenshots": [
+    {
+      "path": "media/screenshot-sql.png",
+      "alt": "PostgreSQL file with a CTE, window function, JSON operators and a dollar-quoted function body, highlighted in the Orca editor.",
+      "caption": "PostgreSQL: CTEs, window functions, JSON operators and $$ bodies.",
+      "theme": "dark"
+    },
+    {
+      "path": "media/screenshot-sqlx.png",
+      "alt": "Dataform .sqlx file with a config block highlighted as JavaScript and ${ref()} / ${self()} templates inside the SQL.",
+      "caption": "Dataform SQLX: config blocks, ${ref()} templates and post_operations.",
+      "theme": "dark"
+    },
+    {
+      "path": "media/screenshot-tsql.png",
+      "alt": "SQL Server stored procedure with TRY/CATCH, transactions and bracketed identifiers highlighted in the Orca editor.",
+      "caption": "T-SQL: procedures, transactions and error handling.",
+      "theme": "dark"
+    }
+  ]
+}

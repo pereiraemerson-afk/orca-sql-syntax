@@ -1,0 +1,32 @@
+-- Stock adjustment procedure (SQL Server / T-SQL)
+CREATE OR ALTER PROCEDURE [dbo].[usp_AdjustStock]
+  @ProductId INT,
+  @Delta     DECIMAL(10, 2),
+  @Reason    NVARCHAR(200) = N'manual'
+AS
+BEGIN
+  SET NOCOUNT ON;
+  DECLARE @Now DATETIME2 = SYSUTCDATETIME();
+
+  BEGIN TRY
+    BEGIN TRANSACTION;
+
+    UPDATE [dbo].[Stock]
+       SET Quantity = Quantity + @Delta,
+           UpdatedAt = @Now
+     WHERE ProductId = @ProductId;
+
+    IF @@ROWCOUNT = 0
+      THROW 50001, 'Product not found', 1;
+
+    INSERT INTO [dbo].[StockLog] (ProductId, Delta, Reason, CreatedAt)
+    VALUES (@ProductId, @Delta, @Reason, @Now);
+
+    COMMIT TRANSACTION;
+  END TRY
+  BEGIN CATCH
+    IF @@TRANCOUNT > 0 ROLLBACK TRANSACTION;
+    THROW;
+  END CATCH
+END;
+GO

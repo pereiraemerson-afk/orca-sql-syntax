@@ -1,0 +1,418 @@
+{
+  "scopeName": "source.sqlx",
+  "name": "SQLX (Dataform)",
+  "patterns": [
+    {
+      "include": "#comments"
+    },
+    {
+      "include": "#js-block"
+    },
+    {
+      "include": "#ops-block"
+    },
+    {
+      "include": "#interpolation"
+    },
+    {
+      "include": "#strings"
+    },
+    {
+      "include": "#numbers"
+    },
+    {
+      "include": "#variables"
+    },
+    {
+      "include": "#types"
+    },
+    {
+      "include": "#constants"
+    },
+    {
+      "include": "#keywords"
+    },
+    {
+      "include": "#functions"
+    },
+    {
+      "include": "#identifiers"
+    },
+    {
+      "include": "#operators"
+    },
+    {
+      "include": "#punctuation"
+    }
+  ],
+  "repository": {
+    "comments": {
+      "patterns": [
+        {
+          "name": "comment.line.double-dash.sql",
+          "match": "--.*$"
+        },
+        {
+          "name": "comment.line.number-sign.sql",
+          "match": "^\\s*#.*$"
+        },
+        {
+          "name": "comment.block.sql",
+          "begin": "/\\*",
+          "end": "\\*/"
+        }
+      ]
+    },
+    "strings": {
+      "patterns": [
+        {
+          "name": "string.quoted.single.sql",
+          "begin": "(?i)[NEB]?'",
+          "end": "'(?!')",
+          "patterns": [
+            {
+              "include": "#interpolation"
+            },
+            {
+              "name": "constant.character.escape.sql",
+              "match": "''|\\\\."
+            }
+          ]
+        },
+        {
+          "name": "string.unquoted.dollar.sql",
+          "begin": "(\\$[A-Za-z_]*\\$)",
+          "end": "\\1"
+        }
+      ]
+    },
+    "identifiers": {
+      "patterns": [
+        {
+          "name": "variable.other.quoted.sql",
+          "match": "\"(?:[^\"]|\"\")*\""
+        },
+        {
+          "name": "variable.other.quoted.sql",
+          "match": "\\[[^\\]]+\\]"
+        },
+        {
+          "name": "variable.other.quoted.sql",
+          "begin": "`",
+          "end": "`",
+          "patterns": [
+            {
+              "include": "#interpolation"
+            }
+          ]
+        }
+      ]
+    },
+    "numbers": {
+      "patterns": [
+        {
+          "name": "constant.numeric.hex.sql",
+          "match": "\\b0x[0-9A-Fa-f]+\\b"
+        },
+        {
+          "name": "constant.numeric.sql",
+          "match": "\\b\\d+(?:\\.\\d+)?(?:[eE][+-]?\\d+)?\\b"
+        }
+      ]
+    },
+    "variables": {
+      "patterns": [
+        {
+          "name": "variable.parameter.sql",
+          "match": "@@?[A-Za-z_][\\w$#]*"
+        },
+        {
+          "name": "variable.parameter.sql",
+          "match": "(?<![\\w:]):[A-Za-z_]\\w*"
+        },
+        {
+          "name": "variable.parameter.sql",
+          "match": "\\$\\d+"
+        },
+        {
+          "name": "variable.parameter.sql",
+          "match": "\\?"
+        }
+      ]
+    },
+    "types": {
+      "patterns": [
+        {
+          "name": "storage.type.sql",
+          "match": "(?i)\\b(?:int64|float64|bignumeric|bigdecimal|string|bytes|struct|range|int|integer|smallint|bigint|tinyint|serial|bigserial|decimal|numeric|number|real|float|double(?:\\s+precision)?|money|bit|boolean|bool|char|nchar|varchar|varchar2|nvarchar|nvarchar2|character(?:\\s+varying)?|text|ntext|clob|nclob|blob|bytea|binary|varbinary|image|date|time|timestamp|timestamptz|datetime|datetime2|smalldatetime|datetimeoffset|interval|year|uuid|uniqueidentifier|json|jsonb|xml|array|enum|geometry|geography|rowversion|sql_variant|long|raw)\\b"
+        }
+      ]
+    },
+    "constants": {
+      "patterns": [
+        {
+          "name": "constant.language.sql",
+          "match": "(?i)\\b(?:null|nan|inf|true|false|unknown|current_date|current_time|current_timestamp|current_user|session_user|localtime|localtimestamp|sysdate|systimestamp)\\b"
+        }
+      ]
+    },
+    "keywords": {
+      "patterns": [
+        {
+          "name": "keyword.control.sql",
+          "match": "(?i)\\b(?:begin|end|if|else|elsif|elseif|then|case|when|loop|while|for|foreach|return|returns|declare|exec|execute|go|goto|break|continue|try|catch|throw|raise|commit|rollback|savepoint|transaction|tran|do|exit|exception|perform|call)\\b"
+        },
+        {
+          "name": "keyword.operator.word.sql",
+          "match": "(?i)\\b(?:and|or|not|in|exists|between|like|ilike|similar|is|any|some|escape|collate|distinct\\s+from)\\b"
+        },
+        {
+          "name": "keyword.other.ddl.sql",
+          "match": "(?i)\\b(?:create|alter|drop|truncate|rename|replace|table|view|materialized|index|unique|primary|foreign|key|references|constraint|check|default|sequence|schema|database|function|procedure|proc|trigger|type|domain|extension|column|add|cascade|restrict|temporary|temp|identity|auto_increment|autoincrement|generated|always|grant|revoke|to|role|user|privileges|comment|before|after|instead|of|each|statement|language|immutable|stable|volatile|security|definer|invoker|clustered|nonclustered|include|tablespace|owner|enable|disable)\\b"
+        },
+        {
+          "name": "keyword.other.dml.sql",
+          "match": "(?i)\\b(?:select|from|where|insert|into|values|update|set|delete|merge|using|matched|returning|output|with|recursive|as|distinct|all|top|limit|offset|fetch|next|rows|row|only|first|last|order|by|group|having|asc|desc|nulls|union|intersect|except|minus|join|inner|left|right|full|outer|cross|natural|lateral|apply|on|over|partition|window|range|preceding|following|unbounded|current|pivot|unpivot|qualify|upsert|conflict|nothing)\\b"
+        }
+      ]
+    },
+    "functions": {
+      "patterns": [
+        {
+          "match": "\\b([A-Za-z_][\\w$]*)\\s*(?=\\()",
+          "captures": {
+            "1": {
+              "name": "entity.name.function.sql"
+            }
+          }
+        }
+      ]
+    },
+    "operators": {
+      "patterns": [
+        {
+          "name": "keyword.operator.sql",
+          "match": "::|<>|!=|<=|>=|\\|\\||->>|->|#>>|#>|@>|<@|[=<>+\\-*/%&|^~]"
+        }
+      ]
+    },
+    "punctuation": {
+      "patterns": [
+        {
+          "name": "punctuation.terminator.statement.sql",
+          "match": ";"
+        },
+        {
+          "name": "punctuation.separator.sql",
+          "match": ","
+        },
+        {
+          "name": "punctuation.accessor.sql",
+          "match": "\\."
+        }
+      ]
+    },
+    "js-strings": {
+      "patterns": [
+        {
+          "name": "string.quoted.double.js",
+          "begin": "\"",
+          "end": "\"",
+          "patterns": [
+            {
+              "name": "constant.character.escape.js",
+              "match": "\\\\."
+            }
+          ]
+        },
+        {
+          "name": "string.quoted.single.js",
+          "begin": "'",
+          "end": "'",
+          "patterns": [
+            {
+              "name": "constant.character.escape.js",
+              "match": "\\\\."
+            }
+          ]
+        },
+        {
+          "name": "string.template.js",
+          "begin": "`",
+          "end": "`",
+          "patterns": [
+            {
+              "include": "#interpolation"
+            }
+          ]
+        }
+      ]
+    },
+    "js-braces": {
+      "begin": "\\{",
+      "end": "\\}",
+      "patterns": [
+        {
+          "include": "#comments"
+        },
+        {
+          "include": "#js-strings"
+        },
+        {
+          "include": "#numbers"
+        },
+        {
+          "name": "constant.language.js",
+          "match": "\\b(?:true|false|null|undefined)\\b"
+        },
+        {
+          "match": "([A-Za-z_$][\\w$]*)\\s*(:)",
+          "captures": {
+            "1": {
+              "name": "support.type.property-name.js"
+            },
+            "2": {
+              "name": "punctuation.separator.key-value.js"
+            }
+          }
+        },
+        {
+          "match": "\\b([A-Za-z_$][\\w$]*)\\s*(?=\\()",
+          "captures": {
+            "1": {
+              "name": "entity.name.function.js"
+            }
+          }
+        },
+        {
+          "name": "keyword.control.js",
+          "match": "\\b(?:const|let|var|function|return|if|else|for|of|in|new|require|module|exports)\\b"
+        },
+        {
+          "include": "#js-braces"
+        },
+        {
+          "name": "punctuation.separator.js",
+          "match": "[,;]"
+        }
+      ]
+    },
+    "js-block": {
+      "begin": "^\\s*\\b(config|js)\\s*(\\{)",
+      "end": "\\}",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.other.dataform.sqlx"
+        },
+        "2": {
+          "name": "punctuation.section.block.begin.js"
+        }
+      },
+      "endCaptures": {
+        "0": {
+          "name": "punctuation.section.block.end.js"
+        }
+      },
+      "contentName": "meta.embedded.block.javascript",
+      "patterns": [
+        {
+          "include": "#comments"
+        },
+        {
+          "include": "#js-strings"
+        },
+        {
+          "include": "#numbers"
+        },
+        {
+          "name": "constant.language.js",
+          "match": "\\b(?:true|false|null|undefined)\\b"
+        },
+        {
+          "match": "([A-Za-z_$][\\w$]*)\\s*(:)",
+          "captures": {
+            "1": {
+              "name": "support.type.property-name.js"
+            },
+            "2": {
+              "name": "punctuation.separator.key-value.js"
+            }
+          }
+        },
+        {
+          "match": "\\b([A-Za-z_$][\\w$]*)\\s*(?=\\()",
+          "captures": {
+            "1": {
+              "name": "entity.name.function.js"
+            }
+          }
+        },
+        {
+          "name": "keyword.control.js",
+          "match": "\\b(?:const|let|var|function|return|if|else|for|of|in|new|require|module|exports)\\b"
+        },
+        {
+          "include": "#js-braces"
+        },
+        {
+          "name": "punctuation.separator.js",
+          "match": "[,;]"
+        }
+      ]
+    },
+    "ops-block": {
+      "match": "^\\s*\\b(pre_operations|post_operations|incremental_where|operations)\\b(?=\\s*\\{)",
+      "captures": {
+        "1": {
+          "name": "keyword.other.dataform.sqlx"
+        }
+      }
+    },
+    "interpolation": {
+      "name": "meta.embedded.expression.sqlx",
+      "begin": "\\$\\{",
+      "end": "\\}",
+      "beginCaptures": {
+        "0": {
+          "name": "punctuation.section.embedded.begin.sqlx"
+        }
+      },
+      "endCaptures": {
+        "0": {
+          "name": "punctuation.section.embedded.end.sqlx"
+        }
+      },
+      "patterns": [
+        {
+          "match": "\\b(ref|resolve|self|name|when|incremental|schema|database|dependencies)\\b\\s*(?=\\()",
+          "captures": {
+            "1": {
+              "name": "support.function.dataform.sqlx"
+            }
+          }
+        },
+        {
+          "include": "#js-strings"
+        },
+        {
+          "include": "#numbers"
+        },
+        {
+          "match": "\\b([A-Za-z_$][\\w$]*)\\s*(?=\\()",
+          "captures": {
+            "1": {
+              "name": "entity.name.function.js"
+            }
+          }
+        },
+        {
+          "name": "variable.other.js",
+          "match": "[A-Za-z_$][\\w$]*"
+        },
+        {
+          "include": "#js-braces"
+        }
+      ]
+    }
+  }
+}
